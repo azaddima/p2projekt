@@ -2,13 +2,14 @@ package de.haw_hamburg.mt.p2.projekt.finnazad;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JPanel;
 
-public class PaintArea extends JPanel implements Observer{
+public class PaintArea extends JPanel implements Observer, Serializable{
 	
 	//My List of shapes. Will be changed later to hold any <Object>
 	private ArrayList<MyRectangle> forms = new ArrayList<MyRectangle>();
@@ -83,11 +84,29 @@ public class PaintArea extends JPanel implements Observer{
 		
 		System.out.println("Highest Layer: " + highestLayer);
 	}
+	
+	public ArrayList<MyRectangle> getForms() {
+		return forms;
+	}
+	
+	public void setForms(ArrayList<MyRectangle> forms) {
+		this.forms = forms;
+	}
+	
+	public void clearForms() {
+		forms.clear();
+		repaint();
+	}
+	
+	
 
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		
 		
 	}
+
+	
+
 	
 }

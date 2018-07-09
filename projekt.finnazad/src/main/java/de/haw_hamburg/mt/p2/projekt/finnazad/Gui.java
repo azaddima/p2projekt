@@ -27,20 +27,35 @@ import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.TextField;
 import javax.swing.JTextField;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 
 public class Gui extends JFrame {
 
-	//zeichenfläche
+	//Zeichenfläche
 	private PaintArea paintArea = new PaintArea();
 	private JButton addRectBtn;
 	private JButton stopPntBtn;
+	private JButton network; 
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JSlider colorSliderRed;
 	private JSlider colorSliderGreen;
 	private JSlider colorSliderBlue;
+	private JMenuItem mntmNew;
+	private JMenuItem mntmSave;
+	private JMenuItem mntmOpen;
+	private JTextField textField_3;
+	private JPanel colorConfigPanel;
+	private JPanel serverPanel;
+	private JPanel clientPanel;
+	private JPanel networkPanel;
+	private JPanel changings;
+	private JTextField textField_4;
+	private JTextField ipAddressClientTextField;
 	
 	public Gui() {
 	
@@ -48,10 +63,85 @@ public class Gui extends JFrame {
 		JPanel configPanel = new JPanel();
 		configPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		getContentPane().add(configPanel, BorderLayout.EAST);
-		configPanel.setLayout(new GridLayout(4, 1, 0, 0));
+		configPanel.setLayout(new BorderLayout(0, 0));
 		
-		JPanel colorConfigPanel = new JPanel();
-		configPanel.add(colorConfigPanel);
+		changings = new JPanel();
+		configPanel.add(changings, BorderLayout.NORTH);
+		changings.setLayout(new BorderLayout(0, 0));
+		
+		networkPanel = new JPanel();
+		//changings.add(networkPanel, BorderLayout.NORTH);
+		networkPanel.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		serverPanel = new JPanel();
+		networkPanel.add(serverPanel);
+		serverPanel.setLayout(new GridLayout(3, 1, 0, 0));
+		
+		JLabel serverLabel = new JLabel("Server");
+		serverLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		serverLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		serverLabel.setAlignmentY(1.0f);
+		serverPanel.add(serverLabel);
+		
+		JPanel panel_1 = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel_1.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		serverPanel.add(panel_1);
+		
+		JLabel lblPort = new JLabel("Port");
+		lblPort.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel_1.add(lblPort);
+		
+		textField_3 = new JTextField();
+		textField_3.setColumns(5);
+		panel_1.add(textField_3);
+		
+		JPanel panel_2 = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) panel_2.getLayout();
+		flowLayout_1.setAlignment(FlowLayout.LEFT);
+		serverPanel.add(panel_2);
+		
+		JLabel lblIpAddress = new JLabel("IP   ");
+		lblIpAddress.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel_2.add(lblIpAddress);
+		
+		JLabel label = new JLabel("New label");
+		panel_2.add(label);
+		
+		clientPanel = new JPanel();
+		networkPanel.add(clientPanel);
+		clientPanel.setLayout(new GridLayout(3,1));
+		//clientPanel.setVisible(false);
+		
+		JLabel clientLabel = new JLabel("Client");
+		clientPanel.add(clientLabel);
+		
+		JPanel clientIpPanel = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) clientIpPanel.getLayout();
+		flowLayout_2.setAlignment(FlowLayout.LEFT);
+		clientPanel.add(clientIpPanel);
+		
+		JLabel ipAddressClientLabel = new JLabel("IP");
+		clientIpPanel.add(ipAddressClientLabel);
+		
+		ipAddressClientTextField = new JTextField();
+		clientIpPanel.add(ipAddressClientTextField);
+		ipAddressClientTextField.setColumns(10);
+		
+		JPanel clientPortPanel = new JPanel();
+		FlowLayout fl_clientPortPanel = (FlowLayout) clientPortPanel.getLayout();
+		fl_clientPortPanel.setAlignment(FlowLayout.LEFT);
+		clientPanel.add(clientPortPanel);
+		
+		JLabel portClientPanel = new JLabel("Port");
+		clientPortPanel.add(portClientPanel);
+		
+		textField_4 = new JTextField();
+		clientPortPanel.add(textField_4);
+		textField_4.setColumns(10);
+		
+		colorConfigPanel = new JPanel();
+		changings.add(colorConfigPanel, BorderLayout.NORTH);
 		colorConfigPanel.setLayout(new GridLayout(7, 1, 0, 0));
 		
 		JLabel lblColor = new JLabel("Color");
@@ -114,9 +204,21 @@ public class Gui extends JFrame {
 		colorSliderBlue.setMinorTickSpacing(1);
 		colorSliderBlue.setMaximum(255);
 		
+		JPanel tabs = new JPanel();
+		configPanel.add(tabs, BorderLayout.SOUTH);
+		tabs.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JPanel tabPanel = new JPanel();
+		tabs.add(tabPanel);
+		tabPanel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		tabPanel.setLayout(new BoxLayout(tabPanel, BoxLayout.X_AXIS));
+		
+		network = new JButton("Network Settings");
+		tabPanel.add(network);
 		
 		
-		//buttom panel
+		
+		//button panel
 		JPanel southPanel = new JPanel();
 		southPanel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		getContentPane().add(southPanel, BorderLayout.SOUTH);
@@ -138,19 +240,17 @@ public class Gui extends JFrame {
 		fl_menuPanel.setAlignment(FlowLayout.LEFT);
 		getContentPane().add(menuPanel, BorderLayout.NORTH);
 		
-		
-		
 		JMenuBar menuBar = new JMenuBar();
 		menuPanel.add(menuBar);
 		
 		
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
-		JMenuItem mntmNew = new JMenuItem("New");
+		mntmNew = new JMenuItem("New");
 		mnFile.add(mntmNew);
-		JMenuItem mntmSave = new JMenuItem("Save");
+		mntmSave = new JMenuItem("Save");
 		mnFile.add(mntmSave);
-		JMenuItem mntmOpen = new JMenuItem("Open");
+		mntmOpen = new JMenuItem("Open");
 		mnFile.add(mntmOpen);
 		
 		JMenu mnEdit = new JMenu("Edit");
@@ -202,6 +302,77 @@ public class Gui extends JFrame {
 		this.colorSliderBlue = colorSliderBlue;
 	}
 
+	public JMenuItem getMntmNew() {
+		return mntmNew;
+	}
 
+	public void setMntmNew(JMenuItem mntmNew) {
+		this.mntmNew = mntmNew;
+	}
+
+	public JMenuItem getMntmSave() {
+		return mntmSave;
+	}
+
+	public void setMntmSave(JMenuItem mntmSave) {
+		this.mntmSave = mntmSave;
+	}
+
+	public JMenuItem getMntmOpen() {
+		return mntmOpen;
+	}
+
+	public void setMntmOpen(JMenuItem mntmOpen) {
+		this.mntmOpen = mntmOpen;
+	}
+
+	public JButton getNetwork() {
+		return network;
+	}
+
+	public void setNetwork(JButton network) {
+		this.network = network;
+	}
+
+	public JPanel getServerPanel() {
+		return serverPanel;
+	}
+
+	public void setServerPanel(JPanel serverPanel) {
+		this.serverPanel = serverPanel;
+	}
+
+	public JPanel getColorConfigPanel() {
+		return colorConfigPanel;
+	}
+
+	public void setColorConfigPanel(JPanel colorConfigPanel) {
+		this.colorConfigPanel = colorConfigPanel;
+	}
+
+	public JPanel getClientPanel() {
+		return clientPanel;
+	}
+
+	public void setClientPanel(JPanel clientPanel) {
+		this.clientPanel = clientPanel;
+	}
+
+	public JPanel getNetworkPanel() {
+		return networkPanel;
+	}
+
+	public void setNetworkPanel(JPanel networkPanel) {
+		this.networkPanel = networkPanel;
+	}
+
+	public JPanel getChangings() {
+		return changings;
+	}
+
+	public void setChangings(JPanel changings) {
+		this.changings = changings;
+	}
 	
+
 }

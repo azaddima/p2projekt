@@ -6,7 +6,11 @@ import java.io.Serializable;
 
 public class MyRectangle extends MyFormTemplate implements Serializable {
 	
-//	private Graphics g;
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	//	private Graphics g;
 	private int height;
 	private int width;
 	

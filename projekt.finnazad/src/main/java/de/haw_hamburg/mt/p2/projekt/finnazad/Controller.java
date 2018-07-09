@@ -10,6 +10,7 @@ import java.awt.*;
 	import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.nio.channels.NetworkChannel;
 
 	public class Controller {
 		
@@ -17,6 +18,7 @@ import java.awt.event.MouseListener;
 	private Rectangle rect = new Rectangle(200,300,300,300);
 	private PaintArea paintArea;
 	private MyFormTemplate form;
+	private FileIo fileIo;
 	    
     public Controller(final Gui view){
 
@@ -103,6 +105,8 @@ import java.awt.event.MouseListener;
 			}
 		});
     	
+    	
+    	
     	paintArea.addMouseListener(new MouseListener() {
 			
 			public void mouseReleased(MouseEvent e) {
@@ -146,6 +150,39 @@ import java.awt.event.MouseListener;
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
 				
+				
+			}
+		});
+    	
+    	view.getNetwork().addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				view.getChangings().remove(view.getColorConfigPanel());
+				view.getChangings().add(view.getNetworkPanel(),BorderLayout.NORTH);
+				view.revalidate();
+				
+			}
+		});
+    	
+    	//ActionListener for JMenuBar
+    	
+    	//ActionListener for "New"-button, clears screen
+    	view.getMntmNew().addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				paintArea.clearForms();
+				
+			}
+		});
+    	
+    	//ActionListener for "Save"-button, saves data in txt file
+    	view.getMntmSave().addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				fileIo.saveData();
 				
 			}
 		});
