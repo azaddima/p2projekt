@@ -47,7 +47,7 @@ public class MyRectangle extends MyFormTemplate implements Serializable {
 		setX(x);
 		setY(y);
 
-		getObserver().notifyObservers();
+		super.getObserver().notifyObservers();
 	}
 
 	public void resizeWidth(int width){
