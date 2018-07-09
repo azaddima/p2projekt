@@ -2,14 +2,18 @@ package de.haw_hamburg.mt.p2.projekt.finnazad;
 
 import java.awt.Graphics;
 import java.io.Serializable;
+import java.util.Observable;
+import java.util.Observer;
 //import java.awt.Rectangle;
 
 public class MyRectangle extends MyFormTemplate implements Serializable {
 	
-//	private Graphics g;
+	
+	//	private Graphics g;
 	private int height;
 	private int width;
 	
+	//Observer	
 	public MyRectangle(int x, int y, int height, int width) {
 		super(x, y);
 		this.height = height;
@@ -43,8 +47,7 @@ public class MyRectangle extends MyFormTemplate implements Serializable {
 		setX(x);
 		setY(y);
 
-		setChanged();
-		notifyObservers();
+		getObserver().notifyObservers();
 	}
 
 	public void resizeWidth(int width){
@@ -61,4 +64,6 @@ public class MyRectangle extends MyFormTemplate implements Serializable {
 		g.fillRect(getX(), getY(), width, height);
 			
 	}
+	
+
 }
