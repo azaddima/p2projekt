@@ -26,10 +26,13 @@ import javax.swing.SwingConstants;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.TextField;
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.JTextField;
 
 
-public class Gui extends JFrame {
+public class Gui extends JFrame implements Observer {
 
 	//zeichenfläche
 	private PaintArea paintArea = new PaintArea();
@@ -201,7 +204,33 @@ public class Gui extends JFrame {
 	public void setColorSliderBlue(JSlider colorSliderBlue) {
 		this.colorSliderBlue = colorSliderBlue;
 	}
+	
+	public JTextField getTextField() {
+		return textField;
+	}
 
+	public JTextField getTextField_1() {
+		return textField_1;
+	}
+
+	public JTextField getTextField_2() {
+		return textField_2;
+	}
+
+	
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
+		if(arg instanceof Color) {
+			
+			// Color text Fields
+			textField.setText(( (Color) arg).getRed() + "");
+			textField_1.setText(((Color) arg).getGreen() + "");
+			textField_2.setText(((Color) arg).getBlue() + "");
+			
+		}
+		
+	}
 
 	
 }

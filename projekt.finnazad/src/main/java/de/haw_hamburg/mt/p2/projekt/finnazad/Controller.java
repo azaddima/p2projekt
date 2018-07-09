@@ -4,12 +4,21 @@ package de.haw_hamburg.mt.p2.projekt.finnazad;
 	import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 
 import java.awt.*;
 	import java.awt.event.ActionEvent;
 	import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 	public class Controller {
 		
@@ -17,13 +26,22 @@ import java.awt.event.MouseListener;
 	private Rectangle rect = new Rectangle(200,300,300,300);
 	private PaintArea paintArea;
 	private MyFormTemplate form;
+	private Gui view = new Gui();
 	    
-    public Controller(final Gui view){
-
+    public Controller(){
+    	
+    	
+    	
     	//get Canvas
     	paintArea = view.getPaintArea();
+    	
+    	//add rects
     	paintArea.addRect(100, 100);
     	paintArea.addRect(250, 100);
+    	
+    	//connect observer and observable at startup
+    	connectObservers();
+    	
     	
     	view.getColorSliderRed().addChangeListener(new ChangeListener() {
 			
@@ -38,7 +56,6 @@ import java.awt.event.MouseListener;
 					form.setC();
 					paintArea.repaint();
 				}
-				
 			
 			}
 		});
@@ -56,8 +73,6 @@ import java.awt.event.MouseListener;
 					form.setC();
 					paintArea.repaint();
 				}
-				
-			
 			}
 		});
 		
@@ -78,7 +93,82 @@ import java.awt.event.MouseListener;
 			
 			}
 		});
+			
+		
+		// COLOR TEXTAREA
+		view.getTextField().addKeyListener(new KeyAdapter() {
+			
+			
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					checkChange();
+				}
+			}
+			
+			public void checkChange() {
+				 
+				 int value = Integer.parseInt(view.getTextField().getText());
+			     if ( value < 0 || value > 255){
+			       JOptionPane.showMessageDialog(null,
+			          "Error: Eine gültige Zahl eingeben: 0 -255", "Error Massage",
+			          JOptionPane.ERROR_MESSAGE);
+			     } else {
+			    	 view.getColorSliderRed().setValue(value);
+			     }
+			
+			}
+		});
+		
+		view.getTextField_1().addKeyListener(new KeyAdapter() {
+			
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					checkChange();
+				}
+			}
+			
+			public void checkChange() {
+				 
+				 int value = Integer.parseInt(view.getTextField_1().getText());
+			     if ( value < 0 || value > 255){
+			       JOptionPane.showMessageDialog(null,
+			          "Error: Eine gültige Zahl eingeben: 0 -255", "Error Massage",
+			          JOptionPane.ERROR_MESSAGE);
+			     } else {
+			    	 view.getColorSliderGreen().setValue(value);
+			     }
+			
+			}
+		});
+		
+		view.getTextField_2().addKeyListener(new KeyAdapter() {
+			
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					checkChange();
+				}
+			}
+			
+			public void checkChange() {
+				
+				 int value = Integer.parseInt(view.getTextField_2().getText());
+			     if ( value < 0 || value > 255){
+			       JOptionPane.showMessageDialog(null,
+			          "Error: Eine gültige Zahl eingeben: 0 -255", "Error Massage",
+			          JOptionPane.ERROR_MESSAGE);
+			     } else {
+			    	 view.getColorSliderBlue().setValue(value);
+			     }
+			}
+		});
+			
     	
+		
+		// -------
+		// BOTTOM TAB
+		// -------
+		
     	view.getAddRectBtn().addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -103,6 +193,8 @@ import java.awt.event.MouseListener;
 			}
 		});
     	
+    	
+    	// MOUSELISTENER
     	paintArea.addMouseListener(new MouseListener() {
 			
 			public void mouseReleased(MouseEvent e) {
@@ -112,26 +204,30 @@ import java.awt.event.MouseListener;
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
 				
-
+				//---
+				//PAINTSTATE 0
+				// ---
 				//sets active layer if object is clicked
 				paintArea.objectsInPos(e.getX(), e.getY());
-	
+
 				//sets active FORM - for editing
 				form = paintArea.getActiveRect();
 				
-				if(form != null) {
-					System.out.println("Red Color changed: " + paintArea.getActiveRect().getR() );
-				}
-				
-				
-				//add and repaint 
-				int dimensions = 25;
+				//---
+				//PAINT STATE 1
+				//---
+				//ADD RECTANGLE
+				int dimensions = 25; // starting size for rectangles
 				System.out.println("PaintState: " + paintArea.getPaintState());
 				if(paintArea.getPaintState() == 1) {
+					
 					paintArea.addRect(e.getX() - dimensions, e.getY() - dimensions);
 					paintArea.repaint();
+					
+					// should add the connect observer and observable here
 				}
 			}
+			
 			
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
@@ -150,6 +246,7 @@ import java.awt.event.MouseListener;
 			}
 		});
     	
+
     	
 //    	view.getPaintArea().repaint();
 
@@ -199,6 +296,21 @@ import java.awt.event.MouseListener;
 //        timer.start();
         
     }
+    
+    
+    public void connectObservers() {
+    	 	
+    	if(paintArea.getForms().size() != 0) {
+    		
+    		ArrayList<MyRectangle> rects = paintArea.getForms();
+    		
+        	for(MyRectangle rect: rects) {
+        		rect.getObserver().addObserver(view);
+        	}
+    	}
+    	
+    }
+    
 }
 
 
