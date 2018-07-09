@@ -6,6 +6,11 @@ import java.util.Observable;
 
 public class MyFormTemplate extends Observable implements Serializable{
 	
+	
+	private static final long serialVersionUID = 1L;
+
+	ObservableForms o = new ObservableForms();
+	
 	private int x;
 	private int y;
 	private Color c;
@@ -51,6 +56,8 @@ public class MyFormTemplate extends Observable implements Serializable{
 	
 	public void setC() {
 		this.c = new Color(r,g,b);
+		
+		o.notifyObservers(c);
 	}
 
 	public int getR() {
@@ -59,6 +66,7 @@ public class MyFormTemplate extends Observable implements Serializable{
 
 	public void setR(int r) {
 		this.r = r;
+
 	}
 
 	public int getG() {
@@ -67,6 +75,7 @@ public class MyFormTemplate extends Observable implements Serializable{
 
 	public void setG(int g) {
 		this.g = g;
+		
 	}
 
 	public int getB() {
@@ -75,8 +84,11 @@ public class MyFormTemplate extends Observable implements Serializable{
 
 	public void setB(int b) {
 		this.b = b;
+	
 	}
 	
+	public ObservableForms getObserver() {
+		return o;
+	}
 	
-
 }

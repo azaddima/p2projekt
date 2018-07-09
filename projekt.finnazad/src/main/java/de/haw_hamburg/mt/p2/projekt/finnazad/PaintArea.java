@@ -26,7 +26,6 @@ public class PaintArea extends JPanel implements Observer{
         for(MyRectangle args: forms) {
         	args.draw(g);
         }
-        
 	}
 	
 	public void addRect(int x, int y) {
@@ -82,6 +81,11 @@ public class PaintArea extends JPanel implements Observer{
 		}
 		
 		System.out.println("Highest Layer: " + highestLayer);
+	}
+
+	
+	public ArrayList<MyRectangle> getForms() {
+		return forms;
 	}
 
 	public void update(Observable o, Object arg) {
